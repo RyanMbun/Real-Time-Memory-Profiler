@@ -1,0 +1,31 @@
+{
+    // settings.json
+    //
+    // Workspace-specific settings, only applied when this folder is open.
+    // java.project.sourcePaths tells the Java extension where your .java
+    // files live so it can give you autocomplete and error checking.
+
+    "java.project.sourcePaths": [
+        "dashboard/src/main/java",
+        "demo"
+    ],
+    "java.configuration.updateBuildConfiguration": "automatic",
+
+    "editor.formatOnSave": true,
+    "editor.tabSize": 4,
+
+    "files.exclude": {
+        "**/target": true,
+        "**/*.o": true
+    },
+
+    "files.associations": {
+        "*.cpp": "cpp",
+        "*.h": "cpp"
+    },
+
+    "C_Cpp.default.cppStandard": "c++17",
+    "C_Cpp.default.includePath": [
+        "${workspaceFolder}/agent/src"
+    ]
+}

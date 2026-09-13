@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  pom.xml
+
+  This is Maven's config file. It tells Maven three things: what to call
+  this project, what Java version to compile for, and what libraries
+  (dependencies) it needs to download before compiling.
+
+  This project has ZERO external dependencies on purpose. We use:
+    - raw java.net.Socket for talking to the C++ agent
+    - java.net.http.HttpClient (built into the JDK since Java 11) for the
+      Claude API call
+    - plain ANSI escape codes for the terminal UI instead of a UI library
+
+  That keeps `mvn package` fast (nothing to download the first time you
+  don't have internet) and keeps the amount of "magic" in the project low,
+  which matters since this is a learning project.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.ryanmbun</groupId>
+    <artifactId>memory-profiler-dashboard</artifactId>
+    <version>1.0.0</version>
+    <packaging>jar</packaging>
+
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <build>
+        <finalName>dashboard</finalName>
+        <plugins>
+            <!-- This plugin lets us produce a runnable "fat jar": a single
+                 .jar file that already knows which class has main(), so you
+                 can run it with just `java -jar target/dashboard.jar` -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.4.1</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>dashboard.Main</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

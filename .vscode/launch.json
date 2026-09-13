@@ -1,0 +1,50 @@
+{
+    // launch.json
+    //
+    // These are debug configurations. Instead of manually running gdb or
+    // attaching a Java debugger from the command line, you pick one of
+    // these from the "Run and Debug" panel (the play button with a bug on
+    // it in the left sidebar) and VS Code sets everything up for you.
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Launch Dashboard (Main)",
+            "request": "launch",
+            "mainClass": "dashboard.Main",
+            "projectName": "memory-profiler-dashboard",
+            "args": "${input:targetPid}",
+            "cwd": "${workspaceFolder}/dashboard"
+        },
+        {
+            "type": "java",
+            "name": "Attach to Running Dashboard",
+            "request": "attach",
+            "hostName": "localhost",
+            "port": 5005
+        },
+        {
+            "name": "Debug Agent (C++/gdb)",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/agent/profiler",
+            "args": ["--pid", "${input:targetPid}", "--print-only"],
+            "cwd": "${workspaceFolder}/agent",
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+        }
+    ],
+    "inputs": [
+        {
+            "id": "targetPid",
+            "type": "promptString",
+            "description": "PID of the process you want to profile (find it with: ps aux)"
+        }
+    ]
+}

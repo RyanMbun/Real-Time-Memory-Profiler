@@ -1,0 +1,55 @@
+{
+    // tasks.json
+    //
+    // These show up in VS Code under "Terminal > Run Task...". Each one
+    // just runs a shell command for you so you don't have to remember or
+    // retype it. "isDefault": true on the build tasks means you can also
+    // trigger it with the keyboard shortcut Ctrl+Shift+B (Cmd+Shift+B on Mac).
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build Agent (C++)",
+            "type": "shell",
+            "command": "make",
+            "options": { "cwd": "${workspaceFolder}/agent" },
+            "group": { "kind": "build", "isDefault": true },
+            "problemMatcher": ["$gcc"]
+        },
+        {
+            "label": "Build Dashboard (Java/Maven)",
+            "type": "shell",
+            "command": "mvn package -q",
+            "options": { "cwd": "${workspaceFolder}/dashboard" },
+            "group": "build",
+            "problemMatcher": []
+        },
+        {
+            "label": "Build All",
+            "dependsOn": ["Build Agent (C++)", "Build Dashboard (Java/Maven)"],
+            "dependsOrder": "sequence",
+            "group": "build"
+        },
+        {
+            "label": "Compile Demo Target",
+            "type": "shell",
+            "command": "javac DemoTarget.java",
+            "options": { "cwd": "${workspaceFolder}/demo" },
+            "problemMatcher": ["$java"]
+        },
+        {
+            "label": "Run Demo Target",
+            "type": "shell",
+            "command": "java DemoTarget",
+            "options": { "cwd": "${workspaceFolder}/demo" },
+            "isBackground": true,
+            "problemMatcher": []
+        },
+        {
+            "label": "Clean Agent Build",
+            "type": "shell",
+            "command": "make clean",
+            "options": { "cwd": "${workspaceFolder}/agent" },
+            "problemMatcher": []
+        }
+    ]
+}
