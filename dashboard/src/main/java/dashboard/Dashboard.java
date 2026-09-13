@@ -3,27 +3,7 @@ package dashboard;
 import java.util.List;
 import java.util.Scanner;
 
-/**
- * Dashboard.java
- *
- * This is the UI thread. It wakes up every 500ms, reads the CURRENT state
- * out of MetricsStore (never touching the socket itself), and redraws the
- * whole terminal screen using ANSI escape codes.
- *
- * ANSI escape codes are special character sequences starting with ESC (\033)
- * that terminals understand as commands instead of text to print. For
- * example "\033[2J" means "clear the whole screen" and "\033[H" means
- * "move the cursor back to the top left corner". We use a handful of these
- * to draw colored boxes and bars without needing any external UI library,
- * which keeps this project dependency-free and easy to build with plain
- * javac + a Makefile.
- *
- * We deliberately do NOT read from the socket in this class. That is
- * SocketReceiver's job, running on its own thread. This class only reads
- * from MetricsStore, which is safe to do from any thread because of the
- * volatile fields and synchronized methods inside it. That separation is
- * what keeps the UI smooth even if the socket briefly has nothing new to say.
- */
+
 public class Dashboard {
 
     // A handful of ANSI codes we use. RESET always goes back to normal text.
@@ -50,16 +30,7 @@ public class Dashboard {
         this.startTimeMs = System.currentTimeMillis();
     }
 
-    /**
-     * Starts the keyboard listener on its own thread and then runs the
-     * render loop on the calling thread until the user quits.
-     *
-     * Note: plain Java's System.in is LINE buffered by the terminal itself
-     * (not by Java), which means a key press is not delivered to our
-     * program until Enter is pressed. That is a real limitation of using
-     * zero external libraries. We accept it here as a scoped tradeoff:
-     * type a letter then press Enter, instead of a single instant keypress.
-     */
+
     public void start() {
         Thread keyboardThread = new Thread(this::listenForKeyboardInput, "keyboard-listener");
         keyboardThread.setDaemon(true); // daemon = JVM can exit even if this thread is still running
