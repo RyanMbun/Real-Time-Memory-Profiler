@@ -1,16 +1,4 @@
-// main.cpp
-//
-// This is the entry point for the C++ agent. It:
-//   1. Reads command line arguments (--pid, --port, --interval, --print-only)
-//   2. Opens a socket and waits for the Java dashboard to connect
-//      (unless --print-only is used, which just prints to the terminal
-//      instead, useful for testing Phase 1 before Phase 2 exists)
-//   3. Loops forever: read /proc, calculate CPU%, send one line of data,
-//      sleep, repeat
-//
-// Usage:
-//   ./profiler --pid 1234 --port 9090 --interval 500
-//   ./profiler --pid 1234 --print-only     (no socket, just prints)
+
 
 #include "proc_reader.h"
 #include "socket_sender.h"
@@ -19,9 +7,7 @@
 #include <cstdlib>   // atoi, exit
 #include <unistd.h>  // usleep
 
-// Turns command line flags like "--pid 1234" into actual variables.
-// This is a very simple manual parser, nothing fancy, but it is easy to
-// read and that matters more than being clever here.
+
 struct Args {
     int pid = -1;
     int port = 9090;
@@ -51,8 +37,6 @@ Args parseArgs(int argc, char* argv[]) {
 //   RSS:43200,PEAK:56000,THREADS:8,CPU:3.2
 //
 // std::to_string(double) always prints 6 decimal places (e.g. "3.200000"),
-// which works but is noisy, so we format CPU with snprintf to keep it to
-// one decimal place instead.
 std::string formatAsLine(const ProcessSnapshot& snapshot, double cpuPercent) {
     char cpuBuffer[32];
     snprintf(cpuBuffer, sizeof(cpuBuffer), "%.1f", cpuPercent);
@@ -64,10 +48,7 @@ std::string formatAsLine(const ProcessSnapshot& snapshot, double cpuPercent) {
 }
 
 int main(int argc, char* argv[]) {
-    // By default C's stdout is "fully buffered" when it's not a real
-    // terminal (like when it's piped or captured). That means our printf
-    // lines can sit in a buffer instead of showing up right away. Line
-    // buffering flushes after every newline, so output appears immediately.
+
     setvbuf(stdout, nullptr, _IOLBF, 0);
 
     Args args = parseArgs(argc, argv);
