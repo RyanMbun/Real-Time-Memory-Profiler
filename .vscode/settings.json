@@ -1,9 +1,5 @@
 {
-    // settings.json
-    //
-    // Workspace-specific settings, only applied when this folder is open.
-    // java.project.sourcePaths tells the Java extension where your .java
-    // files live so it can give you autocomplete and error checking.
+    
 
     "java.project.sourcePaths": [
         "dashboard/src/main/java",
