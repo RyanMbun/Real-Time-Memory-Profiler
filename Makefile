@@ -1,7 +1,4 @@
-# Top-level Makefile. Run these from the memory-profiler/ root folder.
-#
-#   make build   -> builds both the C++ agent and the Java dashboard
-#   make clean   -> removes both build outputs
+
 
 .PHONY: build clean agent dashboard
 
