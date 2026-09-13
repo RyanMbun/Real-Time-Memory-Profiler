@@ -2,7 +2,7 @@
 #
 # Instead of typing this every time:
 #   g++ -std=c++17 -Wall -o profiler src/main.cpp src/proc_reader.cpp src/socket_sender.cpp
-# you just type: make
+# i js type: make
 #
 # "make" looks for a file called Makefile, finds the "all" target (the
 # first one), and runs its recipe. Recipe lines MUST start with a real TAB
