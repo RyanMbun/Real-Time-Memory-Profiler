@@ -16,27 +16,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.Optional;
 
-/**
- * AiReportGenerator.java
- *
- * Reads the most recently exported CSV file, sends its contents to the
- * Claude API with instructions to analyze it, and saves the plain-English
- * response to reports/report_<timestamp>.txt.
- *
- * We use Java's BUILT-IN java.net.http.HttpClient (available since Java 11)
- * instead of the official Anthropic SDK, because the project's goal is to
- * understand exactly what an HTTP call to a REST API looks like: a method,
- * a URL, some headers, and a JSON body. An SDK would hide all of that
- * behind a method call.
- *
- * IMPORTANT: your API key must be set as an environment variable before
- * running this, and must NEVER be hardcoded into source code:
- *   export ANTHROPIC_API_KEY=sk-ant-...
- * If you hardcode a key and push it to GitHub, anyone who finds the repo
- * can use your key and rack up charges on your account. Reading it from
- * the environment with System.getenv() keeps it out of your source files
- * and out of version control entirely.
- */
+
 public class AiReportGenerator {
 
     private static final String API_URL = "https://api.anthropic.com/v1/messages";
@@ -45,10 +25,7 @@ public class AiReportGenerator {
     private static final DateTimeFormatter TIMESTAMP_FORMAT =
             DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss");
 
-    /**
-     * Finds the most recent file in exports/, sends it to Claude, saves and
-     * returns a human-readable result message describing what happened.
-     */
+
     public static String generateFromLatestExport() {
         String apiKey = System.getenv("ANTHROPIC_API_KEY");
         if (apiKey == null || apiKey.isBlank()) {
@@ -87,11 +64,7 @@ public class AiReportGenerator {
         return Optional.ofNullable(newest).map(File::toPath);
     }
 
-    /**
-     * Builds the HTTP request and sends it. This is the part that shows
-     * what a REST API call actually is: a POST request with three headers
-     * and a JSON body, sent over HTTPS.
-     */
+    
     private static String callClaudeApi(String apiKey, String csvContent)
             throws IOException, InterruptedException {
 
@@ -105,9 +78,7 @@ public class AiReportGenerator {
 
         String promptText = instructions + "\n\nCSV data:\n" + csvContent;
 
-        // We build the JSON body by hand (no library) so it's clear exactly
-        // what is being sent. escapeJson() prevents special characters in
-        // the CSV (quotes, newlines) from breaking the JSON structure.
+     
         String jsonBody = "{"
                 + "\"model\":\"" + MODEL + "\","
                 + "\"max_tokens\":1024,"
@@ -138,16 +109,7 @@ public class AiReportGenerator {
         return extractTextFromResponse(response.body());
     }
 
-    /**
-     * Claude's response body looks like:
-     *   { "content": [ { "type": "text", "text": "Here is my analysis..." } ] }
-     *
-     * We are avoiding a JSON library dependency, so instead of properly
-     * parsing this, we find the "text":" marker and read forward until the
-     * matching unescaped closing quote. This is a deliberately simple
-     * approach that works for this API's response shape, not a general
-     * purpose JSON parser.
-     */
+   
     private static String extractTextFromResponse(String responseBody) {
         String marker = "\"text\":\"";
         int start = responseBody.indexOf(marker);
