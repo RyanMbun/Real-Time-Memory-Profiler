@@ -161,16 +161,4 @@ memory-profiler/
 └── Makefile              top-level build shortcut
 ```
 
-## Ideas for extending this
 
-- **Alerting**: play a sound or print a warning if RSS crosses a threshold
-  you set.
-- **History across sessions**: write readings to SQLite instead of just an
-  in-memory rolling window, so you can look at trends over days.
-- **Remote monitoring**: since the agent already talks over TCP, you could
-  run the agent on a remote server and point the dashboard's `host`
-  argument at that server's IP address, with a firewall rule opening the
-  port.
-- **Multiple dashboards**: right now the agent only accepts one connection.
-  Supporting more would mean calling `accept()` in a loop on a background
-  thread and sending each reading to every connected client.
